@@ -24,27 +24,27 @@ function proj3main(dirstring, maxframenum, abs_diff_threshold, alpha_parameter, 
         mkdir(outputFolder);
     end
 
-    % read first image (convert to greyscale and double) to establish background and history
+    % Read first image (convert to greyscale and double) to establish background and history
     firstImagePath = fullfile(dirstring, sprintf("f%04d.jpg", 1));
     img1 = imread(firstImagePath);
     img1Gray = rgb2gray(img1);
     img1GrayDouble = double(img1Gray);
     
-    sbgBackground = img1GrayDouble; % simple BG subtraction background
-    sfdBackground = img1GrayDouble; % simple frame differencing background
-    abgBackground = img1GrayDouble; % adaptive BG subtraction background
-    pfdBackground = img1GrayDouble; % persistent frame differencing background
-    pfdHistory = zeros(size(img1GrayDouble)); % persistent frame differncing history
+    sbgBackground = img1GrayDouble; % Simple BG subtraction background
+    sfdBackground = img1GrayDouble; % Simple frame differencing background
+    abgBackground = img1GrayDouble; % Adaptive BG subtraction background
+    pfdBackground = img1GrayDouble; % Persistent frame differencing background
+    pfdHistory = zeros(size(img1GrayDouble)); % Persistent frame differncing history
     
 
-    % loop through images starting with the first to have fully black start
+    % Loop through images starting with the first to have fully black start
     for t = 1:maxframenum
-        % read frame t
+        % Read frame t
         framePath = fullfile(dirstring, sprintf("f%04d.jpg", t));
         frameT = imread(framePath);
         frameTGray = double(rgb2gray(frameT));
         
-        % calculate frames and backgrounds for 4 algorithms
+        % Calculate frames and backgrounds for 4 algorithms
         [outSBG, sbgBackground] = simpleBGSub(frameTGray, sbgBackground, abs_diff_threshold);
         [outSFD, sfdBackground] = simpleFrameDiff(frameTGray, sfdBackground, abs_diff_threshold);
         [outABG, abgBackground] = adaptiveBGSub(frameTGray, abgBackground, alpha_parameter, abs_diff_threshold);
@@ -53,7 +53,7 @@ function proj3main(dirstring, maxframenum, abs_diff_threshold, alpha_parameter, 
         % Convert PFD grayscale from 0-255 to 0-1
         outPFD = outPFD / 255;
 
-        % write output to folder
+        % Write output to folder
         outImage = [outSBG outSFD ; outABG outPFD];
         
         outputPath = fullfile(outputFolder, sprintf("out%04d.png", t));
