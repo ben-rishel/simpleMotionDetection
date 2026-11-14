@@ -51,7 +51,7 @@ function proj3main(dirstring, maxframenum, abs_diff_threshold, alpha_parameter, 
         [outPFD, pfdBackground, pfdHistory] = persistentFrameDiff(frameTGray, pfdBackground, pfdHistory, gamma_parameter, abs_diff_threshold);
 
         % Convert PFD grayscale from 0-255 to 0-1
-        outPFD = outPFD / 255;
+        outPFD = pfdHistory / 255;
 
         % Write output to folder
         outImage = [outSBG outSFD ; outABG outPFD];
